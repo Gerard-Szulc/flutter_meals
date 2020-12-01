@@ -1,15 +1,29 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_meals/models/userModel.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
+  AppUser _userFromFirebaseUser(User user) {
+    return user != null
+        ? AppUser(
+            uid: user.uid,
+            displayName: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL)
+        : null;
+  }
+
+  Stream<AppUser> get user {
+    return _auth.authStateChanges().map(_userFromFirebaseUser);
+  }
 
   Future signInAnon() async {
     try {
       UserCredential result = await _auth.signInAnonymously();
       User user = result.user;
-      return user;
+      return _userFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());
       return null;
@@ -21,23 +35,13 @@ class AuthService {
       UserCredential result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       User user = result.user;
+      _userFromFirebaseUser(user);
       return user;
     } catch (e) {
       print(e.toString());
       return null;
     }
   }
-
-  // Future signInWithGoogle(cred) async {
-  //   try {
-  //     UserCredential result = await _auth.signInWithCredential(cred);
-  //     User user = result.user;
-  //     return user;
-  //   } catch (e) {
-  //     print(e.toString());
-  //     return null;
-  //   }
-  // }
 
   signOut() {
     try {
@@ -68,10 +72,7 @@ class AuthService {
 
       final User currentUser = _auth.currentUser;
       assert(user.uid == currentUser.uid);
-
-      print('signInWithGoogle succeeded: $user');
-
-      return '$user';
+      return _userFromFirebaseUser(user);
     }
 
     return null;

@@ -17,7 +17,7 @@ Widget _signInButton() {
       await _authService.signInWithGoogle();
     },
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-    highlightElevation: 0,
+    highlightElevation: 1.00,
     borderSide: BorderSide(color: Colors.grey),
     child: Padding(
       padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),

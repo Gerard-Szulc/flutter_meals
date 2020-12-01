@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_meals/auth/auth.dart';
 import 'package:flutter_meals/screens/authenticate/sign_in_google_button.dart';
-import 'package:flutter_meals/screens/drawer/drawer.dart';
+import 'package:flutter_meals/share/constants.dart';
 
 class SignIn extends StatefulWidget {
   @override
@@ -16,7 +16,7 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MainDrawer(),
+      // drawer: MainDrawer(),
       backgroundColor: Colors.orange[100],
       appBar: AppBar(
         backgroundColor: Colors.orange[500],
@@ -29,11 +29,18 @@ class _SignInState extends State<SignIn> {
           child: ListView(
             children: [
               TextField(
+                decoration:
+                    materialTextInputDecoration.copyWith(hintText: 'Email'),
+                autofillHints: [AutofillHints.email],
                 onChanged: (event) {
                   email = event;
                 },
               ),
               TextField(
+                decoration:
+                    materialTextInputDecoration.copyWith(hintText: 'Password'),
+                obscureText: true,
+                autofillHints: [AutofillHints.password],
                 onChanged: (event) {
                   password = event;
                 },
